@@ -1,0 +1,38 @@
+server:
+  port: 8888
+
+# Actuator
+management:
+  server:
+    port: 9002
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+
+spring:
+  # database config
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # database user
+  datasource:
+    jdbcUrl: jdbc:postgresql://localhost:5432/${spring.application.key}_db
+    username: ${spring.application.key}_user
+    password: ${spring.application.key}_user_password
+    driver-class-name: org.postgresql.Driver
+
+  # database flyway
+  flyway:
+    enabled: true
+    locations: classpath:db/migration, classpath:db/dev
+    baseline-on-migrate: true
+    datasource:
+      jdbcUrl: ${spring.datasource.jdbcUrl}
+      username: ${spring.application.key}_flyway
+      password: ${spring.application.key}_flyway_password

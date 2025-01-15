@@ -1,0 +1,54 @@
+spring:
+  jpa:
+    hibernate.ddl-auto: none
+
+  # database user
+  datasource:
+    username: ${DATABASE_USER}
+    jdbcUrl: jdbc-secretsmanager:postgresql://{DATABASE_URL}:{DATABASE_PORT:5432}/{DATABASE_NAME}
+    driver-class-name: com.amazonaws.secretsmanager.sql.AWSSecretsManagerPostgreSQLDriver
+    hikari:
+      minimum-idle: 1
+      maximum-pool-size: 5
+
+  # database flyway
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    execute-in-transaction: true
+    datasource:
+      username: ${DATABASE_FLYWAY}
+      jdbcUrl: ${spring.datasource.jdbcUrl}
+      driver-class-name: ${spring.datasource.driver-class-name}
+
+server:
+  port: 80
+
+logging:
+  level:
+    root: ${LOG_LEVEL:INFO}
+
+# Swagger
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+  show-actuator: true
+  enable-kotlin: true
+
+# Actuator
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  server:
+    port: 9001
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    git:
+      mode: full

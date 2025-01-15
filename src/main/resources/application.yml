@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: config-server
+    team: transaction-payments
+    key: config_server
+
+  # default profile
+  profiles:
+    active: dev
+    include: base, jdbc
